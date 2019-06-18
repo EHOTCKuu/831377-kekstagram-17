@@ -7,8 +7,7 @@ var AMOUNT_LIKES_MAX = 200;
 var AMOUNT_IMG_MIN = 1;
 var AMOUNT_IMG_MAX = 25;
 
-var picturesContainer = document.querySelector('.pictures');
-var findTemplate = document.querySelector('#picture-template').content.querySelector('.picture');
+
 
 var getRandomElement = function (min, max) {
   return (Math.floor(Math.random() * (max - min + 1)) + min);
