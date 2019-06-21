@@ -5,7 +5,7 @@ var AMOUNT_LIKES_MIN = 15;
 var AMOUNT_LIKES_MAX = 200;
 var AMOUNT_AVATARS_MAX = 6;
 var AMOUNT_AVATARS_MIN = 1;
-var AMOUNT_IMGS_MAX = 25;
+var AMOUNT_IMAGES_MAX = 25;
 var COMMENTS_MIN = 0;
 var COMMENTS_MAX = 9;
 
@@ -14,25 +14,25 @@ var imageTemplate = document.querySelector('#picture')
     .content
     .querySelector('.picture');
 
-var getRandomElement = function (min, max) {
+var getRandomNumber = function (min, max) {
   return (Math.floor(Math.random() * (max - min + 1)) + min);
 };
 
 
-var getData = function (data) {
+var getRandomElement = function (data) {
   return (data[Math.floor(Math.random() * data.length)]);
 };
 
 var getComments = function (number) {
-  var comment = [];
+  var comments = [];
   for (var i = 0; i < number; i++) {
-    comment.push({
-      avatar: 'img/avatar-' + getRandomElement(AMOUNT_AVATARS_MIN, AMOUNT_AVATARS_MAX) + '.svg',
-      message: getData(COMMENTS),
-      name: getData(NAMES)
+    comments.push({
+      avatar: 'img/avatar-' + getRandomNumber(AMOUNT_AVATARS_MIN, AMOUNT_AVATARS_MAX) + '.svg',
+      message: getRandomElement(COMMENTS),
+      name: getRandomElement(NAMES)
     });
   }
-  return comment;
+  return comments;
 };
 
 
@@ -41,8 +41,8 @@ var getImages = function (number) {
   for (var i = 0; i < number; i++) {
     images.push({
       url: 'photos/' + (i + 1) + '.jpg',
-      likes: getRandomElement(AMOUNT_LIKES_MIN, AMOUNT_LIKES_MAX),
-      comments: getComments(getRandomElement(COMMENTS_MIN, COMMENTS_MAX))
+      likes: getRandomNumber(AMOUNT_LIKES_MIN, AMOUNT_LIKES_MAX),
+      comments: getComments(getRandomNumber(COMMENTS_MIN, COMMENTS_MAX))
     });
   }
   return images;
@@ -58,16 +58,16 @@ var renderImage = function (image) {
   return imageElement;
 };
 
-var image = getImages(AMOUNT_IMGS_MAX);
+var images = getImages(AMOUNT_IMAGES_MAX);
 
 var renderImages = function (imagesData) {
   var fragmentElement = document.createDocumentFragment();
   for (var i = 0; i < imagesData.length; i++) {
-    fragmentElement.appendChild(renderImage(image[i]));
+    fragmentElement.appendChild(renderImage(images[i]));
   }
 
   imageList.appendChild(fragmentElement);
 
 };
 
-renderImages(image);
+renderImages(images);
