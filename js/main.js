@@ -18,9 +18,8 @@ var getRandomNumber = function (min, max) {
   return (Math.floor(Math.random() * (max - min + 1)) + min);
 };
 
-
 var getRandomElement = function (data) {
-  return (data[Math.floor(Math.random() * data.length)]);
+  return (data[getRandomNumber(0, data.length - 1)]);
 };
 
 var getComments = function (number) {
