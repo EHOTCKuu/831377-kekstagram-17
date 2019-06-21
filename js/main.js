@@ -3,16 +3,16 @@ var COMMENTS = ['Всё отлично!', 'В целом всё неплохо. 
 var NAMES = ['Артём', 'Игорь', 'Трололоша', 'Андрей', 'Константин', 'Василий', 'Саша', 'Ермолай', 'Гербарий'];
 var AMOUNT_LIKES_MIN = 15;
 var AMOUNT_LIKES_MAX = 200;
-var AMOUNT_AVATAR_MAX = 6;
-var AMOUNT_AVATAR_MIN = 1;
-var AMOUNT_IMG_MAX = 25;
-var COMMENT_MIN = 0;
-var COMMENT_MAX = 9;
-
+var AMOUNT_AVATARS_MAX = 6;
+var AMOUNT_AVATARS_MIN = 1;
+var AMOUNT_IMGS_MAX = 25;
+var COMMENTS_MIN = 0;
+var COMMENTS_MAX = 9;
 
 var imageList = document.querySelector('.pictures');
-var fragmentImages = document.createDocumentFragment();
-
+var imageTemplate = document.querySelector('#picture')
+    .content
+    .querySelector('.picture');
 
 var getRandomElement = function (min, max) {
   return (Math.floor(Math.random() * (max - min + 1)) + min);
@@ -27,7 +27,7 @@ var getComments = function (number) {
   var comment = [];
   for (var i = 0; i < number; i++) {
     comment.push({
-      avatar: 'img/avatar-' + getRandomElement(AMOUNT_AVATAR_MIN, AMOUNT_AVATAR_MAX) + '.svg',
+      avatar: 'img/avatar-' + getRandomElement(AMOUNT_AVATARS_MIN, AMOUNT_AVATARS_MAX) + '.svg',
       message: getData(COMMENTS),
       name: getData(NAMES)
     });
@@ -42,14 +42,11 @@ var getImages = function (number) {
     images.push({
       url: 'photos/' + (i + 1) + '.jpg',
       likes: getRandomElement(AMOUNT_LIKES_MIN, AMOUNT_LIKES_MAX),
-      comments: getComments(getRandomElement(COMMENT_MIN, COMMENT_MAX))
+      comments: getComments(getRandomElement(COMMENTS_MIN, COMMENTS_MAX))
     });
   }
   return images;
 };
-
-// eslint-disable-next-line no-console
-console.log(getImages(AMOUNT_IMG_MAX));
 
 
 var renderImage = function (image) {
@@ -57,8 +54,20 @@ var renderImage = function (image) {
 
   imageElement.querySelector('.picture__img').src = image.url;
   imageElement.querySelector('.picture__likes').textContent = image.likes;
-  imageElement.querySelector('.picture__comments').textContent = image.comments;
+  imageElement.querySelector('.picture__comments').textContent = image.comments.length;
   return imageElement;
 };
 
-imageList.appendChild(fragmentImages);
+var image = getImages(AMOUNT_IMGS_MAX);
+
+var renderImages = function (imagesData) {
+  var fragmentElement = document.createDocumentFragment();
+  for (var i = 0; i < imagesData.length; i++) {
+    fragmentElement.appendChild(renderImage(image[i]));
+  }
+
+  imageList.appendChild(fragmentElement);
+
+};
+
+renderImages(image);
