@@ -10,13 +10,15 @@ var COMMENTS_MIN = 0;
 var COMMENTS_MAX = 9;
 var ESC_KEYCODE = 27;
 var EFFECTS = ['effects__preview--none', 'effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat'];
-var FILTERS = [' none', ' grayscale(0..1)', ' sepia(0..1)', ' invert(0..100%)', ' blur(0..3px)', ' filter: brightness(1..3)'];
+var FILTERS = [' none', ' grayscale(0..1)', ' sepia(0..1)', ' invert(0..100%)', ' blur(0..3px)', ' brightness(1..3)'];
 var SCALE_STEP = 25;
-var SCALE = 100;
+var MIN_SCALE = 25;
+var MAX_SCALE = 100;
 
 // привязываем эффект к Radiobutton
 var uploadPreview = document.querySelector('.img-upload__preview');
 var radiobuttonEffects = document.querySelectorAll('.effects__radio');
+
 
 var clickHandler = function (effect, color, filters) {
   effect.addEventListener('click', function () {
@@ -31,6 +33,7 @@ var clickHandler = function (effect, color, filters) {
 for (var effect = 0; effect < radiobuttonEffects.length; effect++) {
   clickHandler(radiobuttonEffects[effect], EFFECTS[effect], FILTERS[effect]);
 }
+
 
 // Открытие попапа и закрытие попапа по крестику и эскейпу
 var overlayForm = document.querySelector('.img-upload__overlay');
@@ -62,29 +65,40 @@ cancelForm.addEventListener('click', function () {
   closePopup();
 });
 
+// редактирование картинки
+
+
 // Масштабирование картинки
+
 var controlSmaller = document.querySelector('.scale__control--smaller');
 var controlBigger = document.querySelector('.scale__control--bigger');
 var controlValue = document.querySelector('.scale__control--value');
 
-var getchangeScale = function (step, value) {
-  var i = step + value;
-  if (i >= 25 && i <= 100) {
-    return i;
-  }
-  return step;
+controlValue.value = MAX_SCALE + '%';
+
+var changeSize = function (value) {
+  uploadPreview.style.transform = 'scale' + '(' + value / 100 + ')';
 };
 
-var getControl = function (scale, steps) {
-  scale.addEventListener('click', function () {
-    SCALE = getchangeScale(SCALE, steps);
-    controlValue.value = SCALE + '%';
-    var scaleInfo = 'transform: SCALE(' + SCALE / 100 + ')';
-    uploadPreview.style = scaleInfo;
-  });
+var changeScale = function (step) {
+  var control = parseInt(controlValue.value, 10);
+  if (control + step <= MAX_SCALE && control + step >= MIN_SCALE) {
+    var i = control + step;
+    controlValue.value = i + '%';
+    changeSize(i);
+  }
 };
-getControl(controlSmaller, -(SCALE_STEP));
-getControl(controlBigger, SCALE_STEP);
+
+controlSmaller.addEventListener('click', function () {
+  changeScale(-1 * SCALE_STEP);
+});
+
+controlBigger.addEventListener('click', function () {
+  changeScale(SCALE_STEP);
+});
+
+// Насыщенность в зависимости от бегунка.
+
 
 // Создание пользователей, комментов, лайков.
 var imageList = document.querySelector('.pictures');
