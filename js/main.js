@@ -9,30 +9,37 @@ var AMOUNT_IMAGES_MAX = 25;
 var COMMENTS_MIN = 0;
 var COMMENTS_MAX = 9;
 var ESC_KEYCODE = 27;
-var EFFECTS = ['effects__preview--none', 'effects__preview--chrome', 'effects__preview--sepia', 'effects__preview--marvin', 'effects__preview--phobos', 'effects__preview--heat'];
-var FILTERS = [' none', ' grayscale(0..1)', ' sepia(0..1)', ' invert(0..100%)', ' blur(0..3px)', ' brightness(1..3)'];
 var SCALE_STEP = 25;
 var MIN_SCALE = 25;
 var MAX_SCALE = 100;
 
 // привязываем эффект к Radiobutton
 var uploadPreview = document.querySelector('.img-upload__preview');
-var radiobuttonEffects = document.querySelectorAll('.effects__radio');
+var effectsList = document.querySelector('.effects__list');
+var levelEffect = document.querySelector('.effect-level');
+var levelLine = levelEffect.querySelector('.effect-level__line');
+var levelPin = levelEffect.querySelector('.effect-level__pin');
+var levelDepth = levelEffect.querySelector('.effect-level__depth');
 
 
-var clickHandler = function (effect, color, filters) {
-  effect.addEventListener('click', function () {
-    uploadPreview.classList = ['img-upload__preview'];
-    if (filters !== ' none') {
-      uploadPreview.classList.add(color);
-      uploadPreview.style.filter = filters;
-    }
-  });
+var styleEffect = 'none';
+var getChangeEffects = function (evt) {
+  uploadPreview.className = '';
+  uploadPreview.style.filter = '';
+  if (evt.target.value === 'none') { // Работает строго, если эффекта нет
+    levelEffect.classList.add('hidden'); // если нет эффекта, то  скрываем строку насыщенности
+  } else if (evt.target.value !== 'none') { // если таргет? находится на эффекте
+    levelPin.style.left = '70%'; // позиция бегунка
+    levelDepth.style.width = '70%'; // заполнение строки насыщенности
+    levelEffect.classList.remove('hidden'); // если переключается на эффект, то показываем строку насыщенности
+    uploadPreview.classList.add('effects__preview--' + evt.target.value); // собираем строку
+  }
+  styleEffect = evt.target.value;
 };
 
-for (var effect = 0; effect < radiobuttonEffects.length; effect++) {
-  clickHandler(radiobuttonEffects[effect], EFFECTS[effect], FILTERS[effect]);
-}
+effectsList.addEventListener('change', function (evt) {
+  getChangeEffects(evt);
+});
 
 
 // Открытие попапа и закрытие попапа по крестику и эскейпу
@@ -64,8 +71,6 @@ uploadFile.addEventListener('change', function () {
 cancelForm.addEventListener('click', function () {
   closePopup();
 });
-
-// редактирование картинки
 
 
 // Масштабирование картинки
@@ -99,6 +104,34 @@ controlBigger.addEventListener('click', function () {
 
 // Насыщенность в зависимости от бегунка.
 
+var getLevelPin = function (effect, value) {
+
+  switch (effect) {
+    case 'chrome':
+      uploadPreview.style.filter = 'grayscale(' + value + ')';
+      break;
+
+    case 'sepia':
+      uploadPreview.style.filter = 'sepia(' + value + ')';
+      break;
+
+    case 'marvin':
+      uploadPreview.style.filter = 'invert(' + value * 100 + '%)';
+      break;
+
+    case 'phobos':
+      uploadPreview.style.filter = 'blur(' + value * 3 + 'px)';
+      break;
+
+    case 'heat':
+      uploadPreview.style.filter = 'brightness(' + value * 3 + ')';
+  }
+};
+
+levelPin.addEventListener('mouseup', function () {
+  var value = (levelPin.offsetLeft / levelLine.clientWidth).toFixed(2);
+  getLevelPin(styleEffect, value);
+});
 
 // Создание пользователей, комментов, лайков.
 var imageList = document.querySelector('.pictures');
