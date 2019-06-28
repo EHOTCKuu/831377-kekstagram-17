@@ -12,6 +12,7 @@ var ESC_KEYCODE = 27;
 var SCALE_STEP = 25;
 var MIN_SCALE = 25;
 var MAX_SCALE = 100;
+var NONE = 'none';
 
 // привязываем эффект к Radiobutton
 var uploadPreview = document.querySelector('.img-upload__preview');
@@ -21,20 +22,31 @@ var levelLine = levelEffect.querySelector('.effect-level__line');
 var levelPin = levelEffect.querySelector('.effect-level__pin');
 var levelDepth = levelEffect.querySelector('.effect-level__depth');
 
+var getAddHidden = function () {
+  levelEffect.classList.add('hidden');
+};
 
-var styleEffect = 'none';
+var getRemoveHidden = function () {
+  levelEffect.classList.remove('hidden');
+};
+
+var getRemoveFilters = function () {
+  uploadPreview.classList.remove(styleEffect);
+};
+
+var styleEffect;
 var getChangeEffects = function (evt) {
-  uploadPreview.className = '';
-  uploadPreview.style.filter = '';
-  if (evt.target.value === 'none') { // Работает строго, если эффекта нет
-    levelEffect.classList.add('hidden'); // если нет эффекта, то  скрываем строку насыщенности
-  } else if (evt.target.value !== 'none') { // если таргет? находится на эффекте
-    levelPin.style.left = '70%'; // позиция бегунка
-    levelDepth.style.width = '70%'; // заполнение строки насыщенности
-    levelEffect.classList.remove('hidden'); // если переключается на эффект, то показываем строку насыщенности
+  if (evt.target.value === NONE) { // Работает строго, если эффекта нет
+    getAddHidden(); // если нет эффекта на кнопке, то  скрываем строку насыщенности
+    getRemoveFilters(); // обнуляем эффект фильтра если есть
+  } else { // если таргет? находится на эффекте
+    getRemoveFilters(); // обнуляем эффект фильтра если есть
+    levelPin.style.left = '100%'; // позиция бегунка
+    levelDepth.style.width = '100%'; // заполнение строки насыщенности
+    getRemoveHidden(); // если переключается на эффект, то показываем строку насыщенности
     uploadPreview.classList.add('effects__preview--' + evt.target.value); // собираем строку
   }
-  styleEffect = evt.target.value;
+  styleEffect = ('effects__preview--' + evt.target.value);
 };
 
 effectsList.addEventListener('change', function (evt) {
