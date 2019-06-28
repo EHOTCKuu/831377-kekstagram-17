@@ -47,7 +47,7 @@ var getChangeEffects = function (value) {
     levelDepth.style.width = '100%'; // заполнение строки насыщенности
     removeHidden(); // если переключается на эффект, то показываем строку насыщенности
     uploadPreview.classList.add('effects__preview--' + value); // собираем строку
-
+    getLevelPin(styleEffect, 453);
   }
 
   styleEffect = ('effects__preview--' + value);
