@@ -12,7 +12,9 @@ var ESC_KEYCODE = 27;
 var SCALE_STEP = 25;
 var MIN_SCALE = 25;
 var MAX_SCALE = 100;
-var NONE = 'none';
+var DEFAULT_FILTER = 'none';
+var HEAT_MIN = 1;
+var HEAT_MAX = 3;
 
 // привязываем эффект к Radiobutton
 var uploadPreview = document.querySelector('.img-upload__preview');
@@ -22,35 +24,38 @@ var levelLine = levelEffect.querySelector('.effect-level__line');
 var levelPin = levelEffect.querySelector('.effect-level__pin');
 var levelDepth = levelEffect.querySelector('.effect-level__depth');
 
-var getAddHidden = function () {
+var addHidden = function () {
   levelEffect.classList.add('hidden');
 };
 
-var getRemoveHidden = function () {
+var removeHidden = function () {
   levelEffect.classList.remove('hidden');
 };
 
-var getRemoveFilters = function () {
+var removeFilters = function () {
   uploadPreview.classList.remove(styleEffect);
 };
 
+
 var styleEffect;
-var getChangeEffects = function (evt) {
-  if (evt.target.value === NONE) { // Работает строго, если эффекта нет
-    getAddHidden(); // если нет эффекта на кнопке, то  скрываем строку насыщенности
-    getRemoveFilters(); // обнуляем эффект фильтра если есть
+var getChangeEffects = function (value) {
+  removeFilters(); // обнуляем эффект фильтра если есть
+  if (value === DEFAULT_FILTER) { // Работает строго, если эффекта нет
+    addHidden(); // если нет эффекта на кнопке, то  скрываем строку насыщенности
   } else { // если таргет? находится на эффекте
-    getRemoveFilters(); // обнуляем эффект фильтра если есть
     levelPin.style.left = '100%'; // позиция бегунка
     levelDepth.style.width = '100%'; // заполнение строки насыщенности
-    getRemoveHidden(); // если переключается на эффект, то показываем строку насыщенности
-    uploadPreview.classList.add('effects__preview--' + evt.target.value); // собираем строку
+    removeHidden(); // если переключается на эффект, то показываем строку насыщенности
+    uploadPreview.classList.add('effects__preview--' + value); // собираем строку
+
   }
-  styleEffect = ('effects__preview--' + evt.target.value);
+
+  styleEffect = ('effects__preview--' + value);
+
 };
 
 effectsList.addEventListener('change', function (evt) {
-  getChangeEffects(evt);
+  getChangeEffects(evt.target.value);
 });
 
 
@@ -100,9 +105,9 @@ var changeSize = function (value) {
 var changeScale = function (step) {
   var control = parseInt(controlValue.value, 10);
   if (control + step <= MAX_SCALE && control + step >= MIN_SCALE) {
-    var i = control + step;
-    controlValue.value = i + '%';
-    changeSize(i);
+    var amount = control + step;
+    controlValue.value = amount + '%';
+    changeSize(amount);
   }
 };
 
@@ -136,13 +141,15 @@ var getLevelPin = function (effect, value) {
       break;
 
     case 'heat':
-      uploadPreview.style.filter = 'brightness(' + value * 3 + ')';
+      uploadPreview.style.filter = 'brightness(' + HEAT_MIN + (HEAT_MAX - HEAT_MIN) * value + ')';
+
   }
 };
 
 levelPin.addEventListener('mouseup', function () {
   var value = (levelPin.offsetLeft / levelLine.clientWidth).toFixed(2);
   getLevelPin(styleEffect, value);
+
 });
 
 // Создание пользователей, комментов, лайков.
@@ -207,3 +214,6 @@ var renderImages = function (imagesData) {
 };
 
 renderImages(images);
+
+
+
