@@ -20,9 +20,11 @@ var HEAT_MAX = 3;
 var uploadPreview = document.querySelector('.img-upload__preview');
 var effectsList = document.querySelector('.effects__list');
 var levelEffect = document.querySelector('.effect-level');
+var levelValue = document.querySelector('.effect-level__value');
 var levelLine = levelEffect.querySelector('.effect-level__line');
 var levelPin = levelEffect.querySelector('.effect-level__pin');
 var levelDepth = levelEffect.querySelector('.effect-level__depth');
+
 
 var addHidden = function () {
   levelEffect.classList.add('hidden');
@@ -47,7 +49,8 @@ var getChangeEffects = function (value) {
     levelDepth.style.width = '100%'; // заполнение строки насыщенности
     removeHidden(); // если переключается на эффект, то показываем строку насыщенности
     uploadPreview.classList.add('effects__preview--' + value); // собираем строку
-    getLevelPin(value, 1);
+
+
   }
 
   styleEffect = ('effects__preview--' + value);
@@ -141,7 +144,7 @@ var getLevelPin = function (effect, value) {
       break;
 
     case 'heat':
-      uploadPreview.style.filter = 'brightness(' + HEAT_MIN + (HEAT_MAX - HEAT_MIN) * value + ')';
+      uploadPreview.style.filter = 'brightness(' + (HEAT_MIN + (HEAT_MAX - HEAT_MIN) * value) + ')';
 
   }
 };
@@ -149,7 +152,7 @@ var getLevelPin = function (effect, value) {
 levelPin.addEventListener('mouseup', function () {
   var value = (levelPin.offsetLeft / levelLine.clientWidth).toFixed(2);
   getLevelPin(styleEffect, value);
-
+  levelValue.value = value;
 });
 
 // Создание пользователей, комментов, лайков.
