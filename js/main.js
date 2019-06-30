@@ -49,8 +49,7 @@ var getChangeEffects = function (value) {
     levelDepth.style.width = '100%'; // заполнение строки насыщенности
     removeHidden(); // если переключается на эффект, то показываем строку насыщенности
     uploadPreview.classList.add('effects__preview--' + value); // собираем строку
-
-
+    getLevelPin(value, 1);
   }
 
   styleEffect = ('effects__preview--' + value);
@@ -147,12 +146,12 @@ var getLevelPin = function (effect, value) {
       uploadPreview.style.filter = 'brightness(' + (HEAT_MIN + (HEAT_MAX - HEAT_MIN) * value) + ')';
 
   }
+  levelValue.value = value;
 };
 
 levelPin.addEventListener('mouseup', function () {
   var value = (levelPin.offsetLeft / levelLine.clientWidth).toFixed(2);
   getLevelPin(styleEffect, value);
-  levelValue.value = value;
 });
 
 // Создание пользователей, комментов, лайков.
