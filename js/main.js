@@ -44,6 +44,7 @@ var getChangeEffects = function (value) {
   removeFilters(); // обнуляем эффект фильтра если есть
   if (value === DEFAULT_FILTER) { // Работает строго, если эффекта нет
     addHidden(); // если нет эффекта на кнопке, то  скрываем строку насыщенности
+    uploadPreview.style.filter = '';
   } else { // если таргет? находится на эффекте
     levelPin.style.left = '100%'; // позиция бегунка
     levelDepth.style.width = '100%'; // заполнение строки насыщенности
@@ -152,6 +153,7 @@ var getLevelPin = function (effect, value) {
 levelPin.addEventListener('mouseup', function () {
   var value = (levelPin.offsetLeft / levelLine.clientWidth).toFixed(2);
   getLevelPin(styleEffect, value);
+
 });
 
 // Создание пользователей, комментов, лайков.
