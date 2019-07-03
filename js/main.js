@@ -35,7 +35,8 @@ var removeHidden = function () {
 };
 
 var removeFilters = function () {
-  uploadPreview.classList.remove(styleEffect);
+  uploadPreview.classList.remove('effects__preview--' + styleEffect);
+  uploadPreview.style.filter = '';
 };
 
 
@@ -44,7 +45,6 @@ var getChangeEffects = function (value) {
   removeFilters(); // обнуляем эффект фильтра если есть
   if (value === DEFAULT_FILTER) { // Работает строго, если эффекта нет
     addHidden(); // если нет эффекта на кнопке, то  скрываем строку насыщенности
-    uploadPreview.style.filter = '';
   } else { // если таргет? находится на эффекте
     levelPin.style.left = '100%'; // позиция бегунка
     levelDepth.style.width = '100%'; // заполнение строки насыщенности
@@ -53,7 +53,7 @@ var getChangeEffects = function (value) {
     getLevelPin(value, 1);
   }
 
-  styleEffect = ('effects__preview--' + value);
+  styleEffect = value;
 
 };
 
