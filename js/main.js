@@ -76,6 +76,8 @@ var onPopupEscPress = function (evt) {
 var openPopup = function () {
   overlayForm.classList.remove('hidden');
   document.addEventListener('keydown', onPopupEscPress);
+  addHidden();
+  removeFilters();
 };
 
 var closePopup = function () {
