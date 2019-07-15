@@ -32,7 +32,7 @@
     document.addEventListener('keydown', onPopupEscPress);
     addHidden();
     removeFilters();
-    
+
   };
 
   var closePopup = function () {
