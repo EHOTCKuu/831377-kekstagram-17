@@ -128,6 +128,7 @@
   };
 
   var createComment = function (pictures) {
+
     var listItem = makeElement('li', 'social__comment');
     var image = makeElement('img', 'social__picture');
 
