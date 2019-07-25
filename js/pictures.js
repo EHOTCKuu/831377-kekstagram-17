@@ -9,6 +9,8 @@
   var filterNew = imgFilters.querySelector('#filter-new');
   var filterPopular = imgFilters.querySelector('#filter-popular');
   var filterDiscussed = imgFilters.querySelector('#filter-discussed');
+  var MAX_COMMENTS = 5;
+  var ESC_KEYCODE = 27;
 
   var getImage = function (result) {
     var templatePicture = document.querySelector('#picture')
@@ -110,6 +112,120 @@
   filterPopular.addEventListener('click', onFilterButtonClickDebounce);
   filterDiscussed.addEventListener('click', onFilterButtonClickDebounce);
   filterNew.addEventListener('click', onFilterButtonClickDebounce);
+
+  // Большая картинка вылезаить
+  var remainingComments;
+  var commentsQuantity = {};
+  var bigPicture = document.querySelector('.big-picture');
+  var socialComments = document.querySelector('.social__comments');
+  var commentsLoader = bigPicture.querySelector('.comments-loader');
+
+  var makeElement = function (tagName, className) {
+    var element = document.createElement(tagName);
+    element.classList.add(className);
+
+    return element;
+  };
+
+  var createComment = function (pictures) {
+    var listItem = makeElement('li', 'social__comment');
+    var image = makeElement('img', 'social__picture');
+
+    image.src = pictures.avatar;
+    listItem.appendChild(image);
+
+    var commentText = makeElement('p', 'social__text');
+    commentText.textContent = pictures.message;
+    listItem.appendChild(commentText);
+
+    return listItem;
+  };
+
+  var renderComments = function (photos) {
+    var fragment = document.createDocumentFragment();
+    photos.forEach(function (item) {
+      fragment.appendChild(createComment(item));
+    });
+
+    socialComments.appendChild(fragment);
+
+    updateCommentsContent(commentsQuantity.currentCount, commentsQuantity.totalCount);
+  };
+
+  var getBigPicture = function (photos) {
+    bigPicture.classList.remove('hidden');
+    bigPicture.querySelector('.big-picture__img img').src = photos.url;
+    bigPicture.querySelector('.likes-count').textContent = photos.likes;
+    bigPicture.querySelector('.social__caption').textContent = photos.description;
+    remainingComments = photos.comments.slice(0);
+    commentsQuantity.totalCount = remainingComments.length;
+    socialComments.innerHTML = '';
+
+    renderComments(prepareComments(remainingComments));
+  };
+
+  var prepareComments = function (comments) {
+    if (comments.length > MAX_COMMENTS) {
+      commentsLoader.classList.remove('hidden');
+      commentsQuantity.currentCount = commentsQuantity.totalCount - comments.length + MAX_COMMENTS;
+
+      return comments.splice(0, MAX_COMMENTS);
+    }
+
+    commentsLoader.classList.add('hidden');
+    commentsQuantity.currentCount = commentsQuantity.totalCount;
+
+    return comments.splice(0, comments.length);
+  };
+
+  var updateCommentsContent = function (currentCount, totalCount) {
+    bigPicture.querySelector('.social__comment-count').textContent = currentCount + ' из '
+      + totalCount + ' комментариев';
+  };
+
+  var loadCommentsClickHandler = function () {
+    renderComments(prepareComments(remainingComments));
+  };
+
+  commentsLoader.addEventListener('click', loadCommentsClickHandler);
+
+  var showBigPhoto = function (evt) {
+    evt.preventDefault();
+    if (evt.target.classList.contains('picture__img')) {
+      var attribute = evt.target.getAttribute('src');
+      for (var i = 0; i < picturesBlock.length; i++) {
+        if (picturesBlock[i].url === attribute) {
+          getBigPicture(picturesBlock[i]);
+        }
+      }
+    }
+  };
+
+  var openBigPicture = function (evt) {
+    var target = evt.target;
+    var picture = target.closest('.picture');
+    if (!picture) {
+      return;
+    }
+    showBigPhoto(evt);
+  };
+
+  picturesElement.addEventListener('click', openBigPicture);
+
+  // Закрываем попап
+  var bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
+
+  var uploadEscPress = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      bigPicture.classList.add('hidden');
+    }
+  };
+
+  document.addEventListener('keydown', uploadEscPress);
+
+  bigPictureCancel.addEventListener('click', function () {
+    bigPicture.classList.add('hidden');
+  });
 })();
 
 
