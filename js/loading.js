@@ -2,12 +2,13 @@
 (function () {
   var URL = ' https://js.dump.academy/kekstagram/data';
   var TIME_OUT = 10000;
+  var GOOD_STATUS = 200;
   window.load = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
     xhr.addEventListener('load', function () {
-      if (xhr.status === 200) {
+      if (xhr.status === GOOD_STATUS) {
         onSuccess(xhr.response);
       } else {
         onError('Статус ответа: ' + xhr.status + ' ' + xhr.statusText);
