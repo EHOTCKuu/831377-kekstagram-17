@@ -16,7 +16,6 @@
     window.preview.imgUploadPreview.style.filter = '';
     window.preview.scaleControlValue.value = MAX_SCALE_VALUE + '%';
   });
-
   // Закрываем форму
   var uploadCancel = document.querySelector('#upload-cancel');
   var textDescription = imgUploadOverlay.querySelector('.text__description');
@@ -30,15 +29,12 @@
     textDescription.value = '';
     window.preview.imgUploadPreview.className = 'img-upload__preview';
   };
-
   var onImgUploadEscPress = function (evt) {
     if (evt.keyCode === ESC_BUTTON) {
       closePopup(imgUploadOverlay);
     }
   };
-
   document.addEventListener('keydown', onImgUploadEscPress);
-
   uploadCancel.addEventListener('click', function () {
     closePopup(imgUploadOverlay);
   });
