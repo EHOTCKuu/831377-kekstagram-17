@@ -13,7 +13,7 @@
     var hashtegArray = hashtegValue ? hashtegValue.split(' ') : [];
 
     if (hashtegArray.length > HASHTEG_MAX_LENGTH) {
-      errorMessage = 'Должно быть не больше 5 хэш-тегов';
+      errorMessage = 'Нельзя указать больше пяти хэш-тегов';
     }
     hashtegArray.forEach(function (hash) {
       var hashtagArrayCopy = hashtegArray.slice();
