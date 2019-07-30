@@ -1,9 +1,9 @@
 'use strict';
 (function () {
-  var URL = ' https://js.dump.academy/kekstagram/data';
+  var URL = 'https://js.dump.academy/kekstagram';
   var TIME_OUT = 10000;
   var GOOD_STATUS = 200;
-  window.load = function (onSuccess, onError) {
+  window.upload = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
 
@@ -23,7 +23,7 @@
 
     xhr.timeout = TIME_OUT; // 10s
 
-    xhr.open('GET', URL);
-    xhr.send();
+    xhr.open('POST', URL);
+    xhr.send(data);
   };
 })();
