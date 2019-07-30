@@ -10,7 +10,4 @@
     document.addEventListener('keydown', window.onPopupEscPress);
   }); // удаляем функцию назначения закрытия попапа при потере фокуса с формы комментария.
 
-
-
-
 })();
