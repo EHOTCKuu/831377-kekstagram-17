@@ -2,7 +2,7 @@
 
 (function () {
   var MAX_SCALE_VALUE = 100;
-  var ESC_BUTTON = 27;
+
 
   var uploadFile = document.querySelector('#upload-file');
   var imgUploadOverlay = document.querySelector('.img-upload__overlay');
@@ -30,11 +30,13 @@
     window.preview.imgUploadPreview.className = 'img-upload__preview';
   };
   var onImgUploadEscPress = function (evt) {
-    if (evt.keyCode === ESC_BUTTON) {
+    if (window.utils.pressEscButton(evt)) {
       closePopup(imgUploadOverlay);
     }
   };
-  document.addEventListener('keydown', onImgUploadEscPress);
+
+  window.utils.clearElement(onImgUploadEscPress);
+
   uploadCancel.addEventListener('click', function () {
     closePopup(imgUploadOverlay);
   });
@@ -44,7 +46,7 @@
   });
 
   textDescription.addEventListener('blur', function () {
-    document.addEventListener('keydown', onImgUploadEscPress);
+    window.utils.clearElement(onImgUploadEscPress);
   });
 
   // Хэштэги
@@ -53,7 +55,7 @@
   });
 
   textHashtags.addEventListener('blur', function () {
-    document.addEventListener('keydown', onImgUploadEscPress);
+    window.utils.clearElement(onImgUploadEscPress);
   });
 
   var imgUploadForm = document.querySelector('.img-upload__form');
@@ -69,7 +71,7 @@
   var main = document.querySelector('main');
 
   var onEscKeydown = function (evt) {
-    if (evt.keyCode === ESC_BUTTON) {
+    if (window.utils.pressEscButton(evt)) {
       closeModal();
     }
   };
@@ -90,7 +92,7 @@
 
   var onSuccessSave = function () {
     resetForm();
-    imgUploadOverlay.classList.add('hidden');
+    window.utils.closeElement(imgUploadOverlay);
     var element = successTemplate.cloneNode(true);
     main.appendChild(element);
 
@@ -109,7 +111,7 @@
 
   var onErrorSave = function () {
     resetForm();
-    imgUploadOverlay.classList.add('hidden');
+    window.utils.closeElement(imgUploadOverlay);
     var element = errorTemplate.cloneNode(true);
     main.appendChild(element);
 
@@ -130,6 +132,6 @@
   imgUploadForm.addEventListener('submit', function (evt) {
     evt.preventDefault();
     evt.stopPropagation();
-    window.upload(new FormData(imgUploadForm), onSuccessSave, onErrorSave);
+    window.backend.upload(new FormData(imgUploadForm), onSuccessSave, onErrorSave);
   });
 })();
