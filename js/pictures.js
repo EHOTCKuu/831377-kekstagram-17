@@ -10,7 +10,7 @@
   var filterPopular = imgFilters.querySelector('#filter-popular');
   var filterDiscussed = imgFilters.querySelector('#filter-discussed');
   var MAX_COMMENTS = 5;
-  var ESC_KEYCODE = 27;
+
 
   var getImage = function (result) {
     var templatePicture = document.querySelector('#picture')
@@ -62,7 +62,7 @@
   };
 
   var showNewFotos = function (photos) {
-    var photosCopy = photos.slice(NEW_PICTURES);
+    var photosCopy = photos.slice(-NEW_PICTURES);
     shuffleArray(photosCopy);
     insertPhoto(photosCopy);
   };
@@ -104,7 +104,7 @@
     };
   };
 
-  window.load(showLoadSuccess);
+  window.backend.load(showLoadSuccess);
 
   var onFilterButtonClickDebounce = debounce(onFilterButtonClick);
 
@@ -217,15 +217,15 @@
   var bigPictureCancel = bigPicture.querySelector('.big-picture__cancel');
 
   var uploadEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
-      bigPicture.classList.add('hidden');
+    if (window.utils.pressEscButton(evt)) {
+      window.utils.closeElement(bigPicture);
     }
   };
 
-  document.addEventListener('keydown', uploadEscPress);
+  window.utils.clearElement(uploadEscPress);
 
   bigPictureCancel.addEventListener('click', function () {
-    bigPicture.classList.add('hidden');
+    window.utils.closeElement(bigPicture);
   });
 })();
 
