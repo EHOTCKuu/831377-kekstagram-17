@@ -4,7 +4,6 @@
   var DEFAULT_FILTER = 'none';
   var HEAT_MIN = 1;
   var HEAT_MAX = 3;
-  var ESC_KEYCODE = 27;
 
   var uploadPreview = document.querySelector('.img-upload__preview');
   var effectsList = document.querySelector('.effects__list');
@@ -21,7 +20,7 @@
   var uploadFile = document.querySelector('#upload-file');
 
   var onPopupEscPress = function (evt) {
-    if (evt.keyCode === ESC_KEYCODE) {
+    if (window.utils.pressEscButton(evt)) {
       closePopup();
 
     }
