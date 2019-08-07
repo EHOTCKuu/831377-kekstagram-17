@@ -3,7 +3,6 @@
 (function () {
   var MAX_SCALE_VALUE = 100;
 
-
   var uploadFile = document.querySelector('#upload-file');
   var imgUploadOverlay = document.querySelector('.img-upload__overlay');
   var effectNone = imgUploadOverlay.querySelector('#effect-none');
@@ -11,10 +10,10 @@
   uploadFile.addEventListener('change', function () {
     effectNone.checked = true;
     imgUploadOverlay.classList.remove('hidden');
-    window.preview.effectLevel.classList.add('hidden');
-    window.preview.imgUploadPreview.style.transform = '';
-    window.preview.imgUploadPreview.style.filter = '';
-    window.preview.scaleControlValue.value = MAX_SCALE_VALUE + '%';
+    window.effects.effectLevel.classList.add('hidden');
+    window.effects.imgUploadPreview.style.transform = '';
+    window.effects.imgUploadPreview.style.filter = '';
+    window.scaling.scaleControlValue.value = MAX_SCALE_VALUE + '%';
   });
   // Закрываем форму
   var uploadCancel = document.querySelector('#upload-cancel');
@@ -27,7 +26,7 @@
     effectNone.checked = true;
     textHashtags.value = '';
     textDescription.value = '';
-    window.preview.imgUploadPreview.className = 'img-upload__preview';
+    window.effects.imgUploadPreview.className = 'img-upload__preview';
   };
   var onImgUploadEscPress = function (evt) {
     if (window.utils.pressEscButton(evt)) {
