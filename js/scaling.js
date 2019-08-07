@@ -10,6 +10,10 @@
   var controlValue = document.querySelector('.scale__control--value');
   var uploadPreview = document.querySelector('.img-upload__preview');
 
+  window.scaling = {
+    scaleControlValue: controlValue,
+  };
+
   controlValue.value = MAX_SCALE + '%';
 
   var changeSize = function (value) {
